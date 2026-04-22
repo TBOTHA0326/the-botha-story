@@ -25,7 +25,7 @@ const listVariants = {
 
 const itemVariants = {
   closed: { opacity: 0, y: 24 },
-  open: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+  open: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 100, damping: 20 } },
 }
 
 export default function Navbar() {
