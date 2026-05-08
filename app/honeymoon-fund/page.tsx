@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const bankingDetails = [
   ["Bank", "Capitec"],
-  ["Account holder", "Tiaan & Hannah"],
-  ["Account number", "1234567890"],
+  ["Account holder", "Tiaan Botha"],
+  ["Account number", "——————"],
   ["Branch code", "470010"],
   ["Reference", "Your name and surname"]
 ];
@@ -43,7 +43,7 @@ export default function HoneymoonFundPage() {
         <div className="self-end rounded-[0.8rem] bg-white/[0.07] p-1.5">
           <div className="rounded-[0.6rem] bg-black p-6 shadow-[inset_0_1px_18px_rgba(255,255,255,0.06)] md:p-8">
             <p className="max-w-[36rem] font-serif text-4xl leading-[1.02] text-white/88 md:text-6xl">
-              Your presence is the gift. For anyone who would still like to contribute, these are the placeholder banking details.
+              Your presence is the gift. For those who would still like to contribute to our first adventure together, here are the details.
             </p>
 
             <dl className="mt-12 grid gap-0 border-t border-white/14">

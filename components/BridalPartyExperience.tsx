@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 
 type Member = {
+  name: string;
   role: string;
   image: string;
 };
@@ -111,7 +112,7 @@ export default function BridalPartyExperience({ members }: { members: Member[] }
               <div className="relative aspect-[4/5]">
                 <Image
                   src={member.image}
-                  alt={`${member.role} for Tiaan and Hannah`}
+                  alt={`${member.name}, ${member.role}`}
                   fill
                   sizes="(min-width: 768px) 48vw, 100vw"
                   className="object-cover"
@@ -120,8 +121,11 @@ export default function BridalPartyExperience({ members }: { members: Member[] }
                   quality={72}
                 />
               </div>
-              <div className="flex items-center justify-between px-5 py-5">
-                <h2 className="font-serif text-4xl leading-none md:text-5xl">{member.role}</h2>
+              <div className="flex items-end justify-between px-5 py-5">
+                <div>
+                  <h2 className="font-serif text-4xl leading-none md:text-5xl">{member.name}</h2>
+                  <p className="mt-2 font-sans text-[10px] uppercase tracking-[0.32em] text-white/48">{member.role}</p>
+                </div>
                 <span className="font-sans text-[10px] uppercase tracking-[0.32em] text-camel">
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </span>

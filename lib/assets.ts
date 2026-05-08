@@ -50,34 +50,42 @@ export const otherImages = [
 
 export const bridalParty = [
   {
+    name: "Taylo",
     role: "Maid of Honor",
     image: "/images/BridalParty/TayloMaidOfHonor.jpeg"
   },
   {
+    name: "Franz",
     role: "Best Man",
     image: "/images/BridalParty/FranzBestMan.jpeg"
   },
   {
+    name: "Danielle",
     role: "Bridesmaid",
     image: "/images/BridalParty/DanielleFirstBridesmaid.jpeg"
   },
   {
+    name: "Wiehan",
     role: "Groomsman",
     image: "/images/BridalParty/WiehanFirstGroomsman.jpeg"
   },
   {
+    name: "Dera",
     role: "Bridesmaid",
     image: "/images/BridalParty/DeraLastBridesmaid.jpeg"
   },
   {
+    name: "Werner",
     role: "Groomsman",
     image: "/images/BridalParty/WernerLastGroomsman.jpeg"
   },
   {
+    name: "Morné",
     role: "Ring Bearer",
     image: "/images/BridalParty/MorneRingBearer.jpeg"
   },
   {
+    name: "Zayle",
     role: "Flower Girl",
     image: "/images/BridalParty/ZayleFlowerGirl.jpeg"
   }

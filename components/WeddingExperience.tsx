@@ -43,7 +43,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
 
     const ctx = gsap.context(() => {
       gsap.set(".minimal-letter", { opacity: 0, scale: 0.86 });
-      gsap.set(".ring-layer", { opacity: 1 });
+      gsap.set(".ring-layer", { opacity: 1, scale: 1, x: 0, y: 0 });
       gsap.set(".reentry-copy", { opacity: 0, y: 42 });
       gsap.set(".other-card", { opacity: 0, y: 46, scale: 0.985 });
 
@@ -63,23 +63,22 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
 
       tl.to(".hero-title", { scale: 0.08, yPercent: -70, opacity: 0, ease: "power2.inOut" }, 0)
         .to(".hero-kicker", { y: -70, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".ring-layer", { opacity: 0, scale: 0.82, ease: "power2.inOut" }, 0.05)
+        .to(".ring-layer", { opacity: 0, ease: "power2.inOut" }, 0.05)
         .to(".pin-surface", { backgroundColor: "#F7F3EF", color: "#000000", ease: "power2.inOut" }, 0.18)
         .to(".minimal-letter", { opacity: 1, scale: 1, ease: "power2.inOut" }, 0.24)
         .to(".minimal-letter", { opacity: 0.74, scale: 1.045, ease: "power2.inOut" }, 0.38)
         .to(".minimal-letter", { opacity: 1, scale: 1, ease: "power2.inOut" }, 0.5)
         .to(".pin-surface", { backgroundColor: "#000000", color: "#ffffff", ease: "power2.inOut" }, 0.62)
         .to(".minimal-letter", { opacity: 0, scale: 1.18, ease: "power2.inOut", pointerEvents: "none" }, 0.61)
-        .to(".ring-layer", { opacity: 1, scale: 1, ease: "power2.inOut" }, 0.68)
+        .to(".ring-layer", { opacity: 1, ease: "power2.inOut" }, 0.68)
         .to(".reentry-copy", { opacity: 1, y: 0, ease: "power2.inOut" }, 0.72);
 
-      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
       const engagementTrack = document.querySelector<HTMLElement>(".engagement-track");
       const engagementStage = document.querySelector<HTMLElement>(".engagement-horizontal");
 
-      if (isDesktop && engagementTrack && engagementStage) {
-        const getDistance = () => Math.max(0, engagementTrack.scrollWidth - window.innerWidth + window.innerWidth * 0.08);
-        const getScrollLength = () => Math.max(1800, getDistance() * 1.15);
+      if (engagementTrack && engagementStage) {
+        const getDistance = () => Math.max(0, engagementTrack.scrollWidth - window.innerWidth + window.innerWidth * 0.06);
+        const getScrollLength = () => Math.max(1400, getDistance() * 1.2);
 
         gsap.to(engagementTrack, {
           x: () => -getDistance(),
@@ -106,46 +105,8 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         });
       }
 
-      if (!isDesktop) {
-        gsap.set(".engagement-card", { opacity: 0, y: 42, scale: 0.985 });
-
-        ScrollTrigger.batch(".engagement-card", {
-          interval: 0.12,
-          batchMax: 2,
-          start: "top 88%",
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.7,
-              stagger: 0.06,
-              overwrite: true,
-              ease: "power2.out"
-            })
-        });
-      }
-
-      gsap.set(".pillar-card", { opacity: 0, y: 58, scale: 0.975 });
-
-      ScrollTrigger.batch(".pillar-card", {
-        interval: 0.14,
-        batchMax: 3,
-        start: "top 86%",
-        onEnter: (batch) =>
-          gsap.to(batch, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.08,
-            overwrite: true,
-            ease: "power2.out"
-          })
-      });
-
       gsap.to(".pillar-word-back", {
-        yPercent: -24,
+        yPercent: -28,
         ease: "none",
         scrollTrigger: {
           trigger: ".pillar-section",
@@ -156,7 +117,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
       });
 
       gsap.to(".pillar-word-front", {
-        yPercent: 18,
+        yPercent: 22,
         ease: "none",
         scrollTrigger: {
           trigger: ".pillar-section",
@@ -166,27 +127,110 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         }
       });
 
-      gsap.to(".helix-track", {
-        yPercent: -4,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".pillar-section",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
+      const isMobileView = window.matchMedia("(max-width: 767px)").matches;
+
+      gsap.utils.toArray<HTMLElement>(".pillar-card").forEach((card) => {
+        const side = card.dataset.side === "right" ? 1 : -1;
+
+        if (isMobileView) {
+          // Mobile: simple fade-up, no 3D — clean and readable
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 40, scale: 0.96 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 92%",
+                end: "top 52%",
+                scrub: 1.2
+              }
+            }
+          );
+          gsap.to(card, {
+            opacity: 0.3,
+            y: -20,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 12%",
+              end: "top -50%",
+              scrub: 1.0
+            }
+          });
+        } else {
+          // Desktop: full spiral with rotateY swing
+          gsap.fromTo(
+            card,
+            { opacity: 0, rotateY: side * 52, rotateZ: side * 7, scale: 0.86, y: 50 },
+            {
+              opacity: 1,
+              rotateY: 0,
+              rotateZ: 0,
+              scale: 1,
+              y: 0,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 95%",
+                end: "top 36%",
+                scrub: 1.3
+              }
+            }
+          );
+          gsap.to(card, {
+            rotateZ: side * -4,
+            rotateY: side * -22,
+            opacity: 0.25,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 16%",
+              end: "top -50%",
+              scrub: 1.1
+            }
+          });
         }
       });
 
-      gsap.from(".split-content", {
-        xPercent: 16,
+      gsap.from(".spread-kicker", {
         opacity: 0,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".split-section",
-          start: "top 70%",
-          end: "bottom 50%",
-          scrub: true
-        }
+        y: 22,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".split-section", start: "top 80%", end: "top 44%", scrub: 1 }
+      });
+
+      gsap.from(".spread-headline", {
+        opacity: 0,
+        y: 70,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".split-section", start: "top 75%", end: "top 28%", scrub: 1.3 }
+      });
+
+      gsap.from(".spread-meta", {
+        opacity: 0,
+        y: 32,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".split-section", start: "top 68%", end: "top 20%", scrub: 1.1 }
+      });
+
+      gsap.utils.toArray<HTMLElement>(".spread-photo").forEach((photo, i) => {
+        gsap.from(photo, {
+          opacity: 0,
+          y: 56 + i * 18,
+          rotate: i % 2 === 0 ? -1.5 : 1.5,
+          scale: 0.93,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".split-section",
+            start: `top ${78 - i * 6}%`,
+            end: `top ${24 - i * 8}%`,
+            scrub: 1.2 + i * 0.15
+          }
+        });
       });
 
       gsap.from(".rose-core", {
@@ -227,12 +271,11 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
 
   return (
     <main ref={rootRef} className="bg-ink text-white">
-      <section className="container relative min-h-[100dvh] w-full !max-w-none overflow-hidden">
-        <div className="pin-surface relative min-h-[100dvh] overflow-hidden bg-ink text-white">
-          <div className="ring-layer pointer-events-none absolute inset-0">
+      <section className="container relative min-h-[100dvh] w-full !max-w-none">
+        <div className="pin-surface relative min-h-[100dvh] bg-ink text-white">
+          <div className="ring-layer pointer-events-none fixed inset-0 z-[1]">
             <RingScene className="h-full w-full" />
           </div>
-
           <div className="absolute inset-x-0 top-5 z-20 flex items-start justify-between gap-4 px-4 text-[9px] uppercase tracking-[0.28em] text-white/70 md:top-7 md:px-10 md:text-[10px] md:tracking-[0.36em]">
             <Link href="/" className="transition-opacity duration-700 ease-silk hover:opacity-60">
               T & H
@@ -277,7 +320,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         </div>
       </section>
 
-      <section className="engagement-horizontal relative min-h-[100dvh] overflow-hidden bg-ink py-20 text-white md:py-0">
+      <section className="engagement-horizontal relative isolate z-[2] min-h-[100dvh] overflow-hidden bg-ink py-20 text-white md:py-0">
         <div className="engagement-behind pointer-events-none absolute left-[-4vw] top-[13dvh] z-0 whitespace-nowrap font-serif text-[30vw] uppercase leading-none text-white/[0.055] md:text-[15vw]">
           First light / First frame / Tiaan & Hannah /
         </div>
@@ -285,21 +328,21 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-black to-transparent md:w-44" />
 
         <div className="relative z-20 flex min-h-[100dvh] items-center">
-          <div className="engagement-track grid w-full gap-5 px-4 md:flex md:w-max md:items-center md:gap-10 md:px-[8vw] md:will-change-transform">
-            <article className="w-full md:w-[38vw] md:shrink-0">
+          <div className="engagement-track flex w-max items-center gap-6 px-[6vw] will-change-transform md:gap-10 md:px-[8vw]">
+            <article className="w-[78vw] shrink-0 md:w-[38vw]">
               <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">Engagement</p>
-              <h2 className="mt-5 font-serif text-6xl leading-[0.88] md:text-[8rem]">
+              <h2 className="mt-5 font-serif text-5xl leading-[0.88] md:text-[8rem]">
                 First light, first frame.
               </h2>
-              <p className="mt-7 max-w-[31rem] font-sans text-sm leading-7 text-white/58">
-                A sideways chapter through the first images of the story. The photographs move across the frame while the words sit behind them like credits.
+              <p className="mt-6 max-w-[31rem] font-sans text-sm leading-7 text-white/58">
+                The morning after the proposal. These photographs were taken before the world knew, in the hours when it was still just the two of them.
               </p>
             </article>
 
             {engagementImages.map((src, index) => (
               <figure
                 key={src}
-                className={`engagement-card relative z-20 w-full overflow-hidden rounded-[0.7rem] bg-white/6 p-1.5 md:w-[28vw] md:shrink-0 ${
+                className={`engagement-card relative z-20 w-[62vw] shrink-0 overflow-hidden rounded-[0.7rem] bg-white/6 p-1.5 md:w-[28vw] ${
                   index % 3 === 1 ? "md:translate-y-[-9dvh]" : index % 3 === 2 ? "md:translate-y-[8dvh]" : ""
                 }`}
               >
@@ -308,7 +351,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
                     src={src}
                     alt={`Tiaan and Hannah engagement photograph ${index + 1}`}
                     fill
-                    sizes="(min-width: 768px) 28vw, 100vw"
+                    sizes="(min-width: 768px) 28vw, 62vw"
                     className="object-cover"
                     priority={index < 2}
                     loading={index < 2 ? undefined : "lazy"}
@@ -318,54 +361,97 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
               </figure>
             ))}
 
-            <article className="grid w-full gap-6 pb-10 md:w-[32vw] md:shrink-0 md:pb-0">
-              <p className="font-serif text-5xl leading-[0.95] text-white/90 md:text-7xl">
+            <article className="w-[72vw] shrink-0 md:w-[32vw]">
+              <p className="font-serif text-4xl leading-[0.95] text-white/90 md:text-7xl">
                 The gallery keeps moving, but the promise stays still.
               </p>
               <Link
                 href="/rsvp"
-                className="group inline-flex w-max items-center gap-4 rounded-full bg-camel px-2 py-2 pl-6 font-sans text-[11px] uppercase tracking-[0.25em] text-black transition-transform duration-700 ease-silk active:scale-[0.98]"
+                className="group mt-8 inline-flex w-max items-center gap-4 rounded-full bg-camel px-2 py-2 pl-6 font-sans text-[11px] uppercase tracking-[0.25em] text-black transition-transform duration-700 ease-silk active:scale-[0.98]"
               >
                 RSVP
                 <span className="grid size-10 place-items-center rounded-full bg-black text-camel transition-transform duration-700 ease-silk group-hover:translate-x-1">
-                  H
+                  →
                 </span>
               </Link>
             </article>
           </div>
         </div>
       </section>
-      <section className="split-section grid min-h-[100dvh] bg-bone text-black md:grid-cols-[0.38fr_0.62fr]">
-        <div className="flex items-center justify-center border-b border-black/10 p-8 md:border-b-0 md:border-r">
-          <p className="vertical-writing hidden font-sans text-[11px] uppercase tracking-[0.42em] text-black/70 md:block">
-            You are invited / You are invited / You are invited ·
-          </p>
-          <p className="font-sans text-[11px] uppercase tracking-[0.42em] text-black/70 md:hidden">
-            You are invited / You are invited ·
-          </p>
+      <section className="split-section relative isolate z-[2] min-h-[100dvh] overflow-hidden bg-bone px-4 py-20 text-black md:px-14 md:py-28">
+
+        {/* Ghost watermark behind everything */}
+        <p className="pointer-events-none absolute right-[-2vw] top-[6rem] hidden font-serif text-[18vw] uppercase leading-none text-black/[0.04] md:block">
+          Invited
+        </p>
+
+        {/* Top bar */}
+        <div className="spread-kicker relative z-10 mb-16 flex items-center justify-between border-b border-black/12 pb-5 md:mb-20">
+          <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">You are invited</p>
+          <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-black/38">6 December 2026</p>
         </div>
-        <div className="split-content grid content-center gap-6 px-4 py-16 md:grid-cols-3 md:px-14">
-          <div className="md:col-span-2">
-            <h2 className="font-serif text-6xl leading-[0.88] md:text-[8rem]">A day shaped by every person they love.</h2>
+
+        {/* Main editorial grid */}
+        <div className="relative z-10 grid gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-16">
+
+          {/* Left — headline + meta */}
+          <div className="flex flex-col justify-between gap-12">
+            <h2 className="spread-headline font-serif text-[15vw] font-medium leading-[0.84] md:text-[8.8rem]">
+              A day shaped<br />by every<br />person<br />we love.
+            </h2>
+
+            <div className="spread-meta grid gap-6 md:grid-cols-2 md:gap-10">
+              {[
+                ["Date", "6 December 2026"],
+                ["Time", "14:30"],
+                ["Dress code", "Black tie optional"],
+                ["Location", "South Africa"]
+              ].map(([label, value]) => (
+                <div key={label} className="border-t border-black/14 pt-4">
+                  <p className="font-sans text-[10px] uppercase tracking-[0.36em] text-black/38">{label}</p>
+                  <p className="mt-2 font-serif text-2xl leading-tight text-black/80">{value}</p>
+                </div>
+              ))}
+              <div className="md:col-span-2">
+                <Link
+                  href="/rsvp"
+                  className="group inline-flex w-max items-center gap-4 rounded-full bg-black px-2 py-2 pl-6 font-sans text-[11px] uppercase tracking-[0.25em] text-white transition-transform duration-700 ease-silk active:scale-[0.98]"
+                >
+                  Confirm attendance
+                  <span className="grid size-9 place-items-center rounded-full bg-camel text-black transition-transform duration-700 ease-silk group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="grid gap-4">
+
+          {/* Right — staggered photo column */}
+          <div className="flex flex-col gap-4 md:w-[28vw] md:gap-6">
             {splitImages.map((src, index) => (
-              <div key={src} className="relative aspect-[4/5] overflow-hidden rounded-[0.55rem] bg-black/10 p-1">
-                <Image
-                  src={src}
-                  alt={`Tiaan and Hannah invitation detail ${index + 1}`}
-                  fill
-                  sizes="(min-width: 768px) 22vw, 100vw"
-                  className="rounded-[0.4rem] object-cover"
-                  quality={72}
-                />
+              <div
+                key={src}
+                className={`spread-photo relative overflow-hidden rounded-[0.6rem] bg-black/8 p-1.5 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.22)] ${
+                  index === 1 ? "md:translate-x-8" : index === 2 ? "md:-translate-x-4" : ""
+                }`}
+              >
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[0.45rem]">
+                  <Image
+                    src={src}
+                    alt={`Tiaan and Hannah photograph ${index + 1}`}
+                    fill
+                    sizes="(min-width: 768px) 28vw, 100vw"
+                    className="object-cover"
+                    quality={72}
+                  />
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="rose-section relative grid min-h-[110dvh] place-items-center overflow-hidden bg-ink px-4 py-24 text-white">
+      <section className="rose-section relative isolate z-[2] grid min-h-[110dvh] place-items-center overflow-hidden bg-ink px-4 py-24 text-white">
         <div className="relative grid aspect-square min-w-0 place-items-center [width:min(78vw,650px)]">
           <svg className="circle-text absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 500 500" aria-hidden="true">
             <defs>
@@ -390,24 +476,24 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         </div>
       </section>
 
-      <section className="pillar-section relative overflow-hidden bg-bone px-4 py-24 text-black md:px-10 md:py-36">
+      <section className="pillar-section relative isolate z-[2] overflow-hidden bg-bone px-4 py-24 text-black md:px-10 md:py-36">
         <div className="pillar-word-back pointer-events-none absolute left-[-5vw] top-[8rem] font-serif text-[28vw] uppercase leading-[0.74] text-black/[0.045] md:text-[13vw]">
-          After / The / Vows
+          Before / The / Day
         </div>
         <div className="pillar-word-back pointer-events-none absolute bottom-[24rem] right-[-6vw] hidden max-w-[7ch] text-right font-serif text-[10vw] uppercase leading-[0.78] text-camel/20 md:block">
           Still turning
         </div>
 
         <div className="relative z-10 mx-auto grid max-w-[1500px] gap-14 md:grid-cols-[0.72fr_1.28fr]">
-          <aside className="md:sticky md:top-10 md:h-[calc(100dvh-5rem)] md:self-start md:pt-8">
-            <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">After the first chapter</p>
-            <h2 className="mt-5 max-w-[9ch] font-serif text-6xl leading-[0.88] md:text-[8.4rem]">
+          <aside className="mb-12 md:sticky md:top-10 md:mb-0 md:h-[calc(100dvh-5rem)] md:self-start md:pt-8">
+            <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">Before the day</p>
+            <h2 className="mt-4 max-w-[9ch] font-serif text-5xl leading-[0.88] md:mt-5 md:text-[8.4rem]">
               The story keeps turning.
             </h2>
-            <p className="mt-8 max-w-[28rem] font-sans text-sm leading-7 text-black/58">
-              A slow vertical helix of photographs: not a carousel, not a grid, just frames drifting down the page like a physical column.
+            <p className="mt-5 max-w-[28rem] font-sans text-sm leading-7 text-black/58 md:mt-8">
+              Years of ordinary moments that made the extraordinary ones possible. These are the frames from before the wedding day.
             </p>
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
               {[
                 ["RSVP", "/rsvp"],
                 ["Timeline", "/timeline"],
@@ -421,54 +507,94 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
                 >
                   {label}
                   <span className="grid size-10 place-items-center rounded-full bg-camel text-black transition-transform duration-700 ease-silk group-hover:translate-x-1">
-                    H
+                    →
                   </span>
                 </Link>
               ))}
             </div>
           </aside>
 
-          <div className="helix-track relative grid gap-10 md:min-h-[2850px] md:block">
-            <div className="pillar-word-front pointer-events-none font-serif text-[18vw] uppercase leading-[0.75] text-camel/55 md:absolute md:left-[8%] md:top-[410px] md:z-20 md:max-w-[7ch] md:text-[7vw]">
-              Hold this
-            </div>
-            <div className="pillar-word-front pointer-events-none text-right font-serif text-[17vw] uppercase leading-[0.76] text-black/32 md:absolute md:right-[4%] md:top-[1420px] md:z-20 md:max-w-[8ch] md:text-[6vw]">
-              Keep moving
-            </div>
-            <div className="pillar-word-front pointer-events-none hidden font-sans text-[10px] uppercase tracking-[0.5em] text-black/45 md:absolute md:left-[22%] md:top-[1000px] md:z-20 md:block">
-              soft frames / still motion
-            </div>
-            <div className="pillar-word-front pointer-events-none hidden max-w-[9ch] font-serif text-[5.2vw] uppercase leading-[0.8] text-camel/35 md:absolute md:right-[14%] md:top-[2180px] md:z-20 md:block">
-              The night after
-            </div>
-
+          {/* Mobile: 2-column offset grid */}
+          <div className="grid grid-cols-2 gap-3 md:hidden">
             {otherImages.slice(0, 16).map((src, index) => {
-              const offsets = [-22, 18, -8, 26, -18, 8, -28, 22];
-              const widths = [42, 34, 48, 38, 30, 44, 36, 50];
-              const rotations = [-4, 3, -1.5, 5, -3, 2, -5, 1.5];
-              const top = 80 + index * 165;
-              const offset = offsets[index % offsets.length];
-              const width = widths[index % widths.length];
-              const rotate = rotations[index % rotations.length];
-              const depth = index % 4 === 0 ? "md:z-30" : index % 4 === 1 ? "md:z-10" : "md:z-20";
+              const angle = (index / 4) * Math.PI * 2 - Math.PI / 2;
+              const side = Math.sin(angle) >= 0 ? "right" : "left";
+              const tilt = Math.sin(angle) * 3;
+              const isRight = index % 2 === 1;
 
               return (
                 <figure
                   key={src}
-                  className={`pillar-card relative z-10 w-full overflow-hidden rounded-[0.7rem] bg-black/5 p-1.5 shadow-[0_30px_70px_-52px_rgba(0,0,0,0.55)] md:absolute ${depth}`}
+                  data-side={side}
+                  className={`pillar-card overflow-hidden rounded-[0.6rem] bg-black/5 p-1 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.38)] ${isRight ? "mt-8" : ""}`}
+                  style={{ transform: `rotate(${tilt}deg)`, willChange: "transform, opacity" }}
+                >
+                  <div className={`relative overflow-hidden rounded-[0.44rem] ${index % 3 === 0 ? "aspect-[4/5]" : index % 3 === 1 ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
+                    <Image
+                      src={src}
+                      alt={`Tiaan and Hannah photograph ${index + 1}`}
+                      fill
+                      sizes="46vw"
+                      className="object-cover"
+                      quality={66}
+                    />
+                  </div>
+                </figure>
+              );
+            })}
+          </div>
+
+          {/* Desktop: absolute spiral column */}
+          <div
+            className="helix-track relative hidden md:block"
+            style={{
+              perspective: "1200px",
+              minHeight: `${80 + 16 * 210 + 260}px`
+            }}
+          >
+            <div className="pillar-word-front pointer-events-none absolute left-[4%] top-[520px] z-0 max-w-[7ch] font-serif text-[7vw] uppercase leading-[0.75] text-camel/40">
+              Hold this
+            </div>
+            <div className="pillar-word-front pointer-events-none absolute right-[2%] top-[1540px] z-0 max-w-[8ch] text-right font-serif text-[6vw] uppercase leading-[0.76] text-black/22">
+              Keep moving
+            </div>
+            <div className="pillar-word-front pointer-events-none absolute left-[20%] top-[1060px] z-0 font-sans text-[10px] uppercase tracking-[0.5em] text-black/38">
+              soft frames / still motion
+            </div>
+            <div className="pillar-word-front pointer-events-none absolute right-[12%] top-[2300px] z-0 max-w-[9ch] font-serif text-[5vw] uppercase leading-[0.8] text-camel/28">
+              The night after
+            </div>
+
+            {otherImages.slice(0, 16).map((src, index) => {
+              const angle = (index / 4) * Math.PI * 2 - Math.PI / 2;
+              const orbitX = Math.sin(angle) * 28 + Math.sin(angle * 2.1 + 0.9) * 8;
+              const side = orbitX >= 0 ? "right" : "left";
+              const widths = [40, 32, 44, 36, 30, 42, 34, 46];
+              const width = widths[index % widths.length];
+              const tilt = Math.sin(angle) * 5;
+              const top = 80 + index * 210;
+              const depth = index % 4 === 0 ? "z-30" : index % 4 === 1 ? "z-10" : "z-20";
+
+              return (
+                <figure
+                  key={src}
+                  data-side={side}
+                  className={`pillar-card absolute ${depth} overflow-hidden rounded-[0.7rem] bg-black/5 p-1.5 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.48)]`}
                   style={{
                     top: `${top}px`,
-                    left: `calc(50% + ${offset}%)`,
+                    left: `calc(50% + ${orbitX}%)`,
                     width: `${width}%`,
-                    transform: `translateX(-50%) rotate(${rotate}deg)`
+                    transform: `translateX(-50%) rotate(${tilt}deg)`,
+                    transformStyle: "preserve-3d",
+                    willChange: "transform, opacity"
                   }}
                 >
                   <div className={`relative overflow-hidden rounded-[0.52rem] ${index % 3 === 0 ? "aspect-[5/7]" : index % 3 === 1 ? "aspect-[4/5]" : "aspect-[5/6]"}`}>
                     <Image
                       src={src}
-                      alt={`Tiaan and Hannah wedding story photograph ${index + 1}`}
+                      alt={`Tiaan and Hannah photograph ${index + 1}`}
                       fill
-                      sizes="(min-width: 768px) 42vw, 100vw"
+                      sizes="42vw"
                       className="object-cover"
                       quality={66}
                     />

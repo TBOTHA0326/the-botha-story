@@ -36,7 +36,7 @@ export default function RsvpPage() {
         <div className="self-end rounded-[0.8rem] bg-white/[0.07] p-1.5">
           <div className="rounded-[0.6rem] bg-black p-6 shadow-[inset_0_1px_18px_rgba(255,255,255,0.06)] md:p-8">
             <p className="mb-10 max-w-[32rem] font-serif text-4xl leading-[1.02] text-white/88">
-              Add your name and surname. No login, no profile, just a simple guest list in Supabase.
+              Let us know you are coming. Just your name — nothing else needed.
             </p>
             <RsvpForm />
           </div>

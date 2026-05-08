@@ -25,7 +25,7 @@ export default function RsvpForm() {
 
     if (!hasSupabaseConfig || !supabase) {
       setStatus("error");
-      setMessage("Supabase is not configured yet. Add the public URL and anon key to .env.local.");
+      setMessage("We could not save your RSVP. Please try again or contact us directly.");
       return;
     }
 
