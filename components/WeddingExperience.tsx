@@ -116,85 +116,26 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
         }
       });
 
-      gsap.to(".pillar-word-front", {
-        yPercent: 22,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".pillar-section",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
-
-      const isMobileView = window.matchMedia("(max-width: 767px)").matches;
-
-      gsap.utils.toArray<HTMLElement>(".pillar-card").forEach((card) => {
-        const side = card.dataset.side === "right" ? 1 : -1;
-
-        if (isMobileView) {
-          // Mobile: simple fade-up, no 3D — clean and readable
-          gsap.fromTo(
-            card,
-            { opacity: 0, y: 40, scale: 0.96 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 92%",
-                end: "top 52%",
-                scrub: 1.2
-              }
-            }
-          );
-          gsap.to(card, {
-            opacity: 0.3,
-            y: -20,
-            ease: "none",
+      gsap.utils.toArray<HTMLElement>(".spiral-card").forEach((card) => {
+        const isRight = card.classList.contains("spiral-card--right");
+        gsap.fromTo(
+          card,
+          { opacity: 0, x: isRight ? 60 : -60, rotate: "var(--tilt)" },
+          {
+            opacity: 1,
+            x: 0,
+            rotate: "var(--tilt)",
+            ease: "power2.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 12%",
-              end: "top -50%",
-              scrub: 1.0
-            }
-          });
-        } else {
-          // Desktop: full spiral with rotateY swing
-          gsap.fromTo(
-            card,
-            { opacity: 0, rotateY: side * 52, rotateZ: side * 7, scale: 0.86, y: 50 },
-            {
-              opacity: 1,
-              rotateY: 0,
-              rotateZ: 0,
-              scale: 1,
-              y: 0,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 95%",
-                end: "top 36%",
-                scrub: 1.3
-              }
-            }
-          );
-          gsap.to(card, {
-            rotateZ: side * -4,
-            rotateY: side * -22,
-            opacity: 0.25,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 16%",
-              end: "top -50%",
+              start: "top 90%",
+              end: "top 55%",
               scrub: 1.1
             }
-          });
-        }
+          }
+        );
       });
+
 
       gsap.from(".spread-kicker", {
         opacity: 0,
@@ -408,7 +349,8 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
                 ["Date", "6 December 2026"],
                 ["Time", "15:00 For 15:30"],
                 ["Dress code", "All Black - Formal"],
-                ["Location", "Vintage Yard | Wedding Venue"]
+                ["Location", "Vintage Yard | Wedding Venue"],
+                ["RSVP by", "1 October 2026"]
               ].map(([label, value]) => (
                 <div key={label} className="border-t border-black/14 pt-4">
                   <p className="font-sans text-[10px] uppercase tracking-[0.36em] text-black/38">{label}</p>
@@ -487,8 +429,8 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
           Still turning
         </div>
 
-        <div className="relative z-10 mx-auto grid max-w-[1500px] gap-14 md:grid-cols-[0.72fr_1.28fr]">
-          <aside className="mb-12 md:sticky md:top-10 md:mb-0 md:h-[calc(100dvh-5rem)] md:self-start md:pt-8">
+        <div className="relative z-10 mx-auto max-w-[1500px]">
+          <aside className="mb-4 pb-4 md:mb-2 md:pt-8">
             <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">Before the day</p>
             <h2 className="mt-4 max-w-[9ch] font-serif text-5xl leading-[0.88] md:mt-5 md:text-[8.4rem]">
               The story keeps turning.
@@ -517,91 +459,31 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
             </div>
           </aside>
 
-          {/* Mobile: 2-column offset grid */}
-          <div className="grid grid-cols-2 gap-3 md:hidden">
-            {otherImages.slice(0, 16).map((src, index) => {
-              const angle = (index / 4) * Math.PI * 2 - Math.PI / 2;
-              const side = Math.sin(angle) >= 0 ? "right" : "left";
-              const tilt = Math.sin(angle) * 3;
+          {/* Polaroid staircase spiral */}
+          <div className="spiral-stack">
+            {otherImages.map((src, index) => {
               const isRight = index % 2 === 1;
-
+              const tilts = [-2.5, 2, -1.5, 3, -2, 1.5, -3, 2.5, -1, 2];
+              const tilt = isRight
+                ? Math.abs(tilts[index % tilts.length])
+                : -Math.abs(tilts[index % tilts.length]);
               return (
                 <figure
                   key={src}
-                  data-side={side}
-                  className={`pillar-card overflow-hidden rounded-[0.6rem] bg-black/5 p-1 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.38)] ${isRight ? "mt-8" : ""}`}
-                  style={{ transform: `rotate(${tilt}deg)`, willChange: "transform, opacity" }}
+                  className={`spiral-card ${isRight ? "spiral-card--right" : "spiral-card--left"}`}
+                  style={{ "--tilt": `${tilt}deg` } as React.CSSProperties}
                 >
-                  <div className={`relative overflow-hidden rounded-[0.44rem] ${index % 3 === 0 ? "aspect-[4/5]" : index % 3 === 1 ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
+                  <div className="spiral-photo">
                     <Image
                       src={src}
                       alt={`Tiaan and Hannah photograph ${index + 1}`}
                       fill
-                      sizes="46vw"
+                      sizes="(min-width: 768px) 380px, 72vw"
                       className="object-cover"
-                      quality={66}
+                      quality={70}
                     />
                   </div>
-                </figure>
-              );
-            })}
-          </div>
-
-          {/* Desktop: absolute spiral column */}
-          <div
-            className="helix-track relative hidden md:block"
-            style={{
-              perspective: "1200px",
-              minHeight: `${80 + 16 * 210 + 260}px`
-            }}
-          >
-            <div className="pillar-word-front pointer-events-none absolute left-[4%] top-[520px] z-0 max-w-[7ch] font-serif text-[7vw] uppercase leading-[0.75] text-camel/40">
-              Hold this
-            </div>
-            <div className="pillar-word-front pointer-events-none absolute right-[2%] top-[1540px] z-0 max-w-[8ch] text-right font-serif text-[6vw] uppercase leading-[0.76] text-black/22">
-              Keep moving
-            </div>
-            <div className="pillar-word-front pointer-events-none absolute left-[20%] top-[1060px] z-0 font-sans text-[10px] uppercase tracking-[0.5em] text-black/38">
-              soft frames / still motion
-            </div>
-            <div className="pillar-word-front pointer-events-none absolute right-[12%] top-[2300px] z-0 max-w-[9ch] font-serif text-[5vw] uppercase leading-[0.8] text-camel/28">
-              The night after
-            </div>
-
-            {otherImages.slice(0, 16).map((src, index) => {
-              const angle = (index / 4) * Math.PI * 2 - Math.PI / 2;
-              const orbitX = Math.sin(angle) * 28 + Math.sin(angle * 2.1 + 0.9) * 8;
-              const side = orbitX >= 0 ? "right" : "left";
-              const widths = [40, 32, 44, 36, 30, 42, 34, 46];
-              const width = widths[index % widths.length];
-              const tilt = Math.sin(angle) * 5;
-              const top = 80 + index * 210;
-              const depth = index % 4 === 0 ? "z-30" : index % 4 === 1 ? "z-10" : "z-20";
-
-              return (
-                <figure
-                  key={src}
-                  data-side={side}
-                  className={`pillar-card absolute ${depth} overflow-hidden rounded-[0.7rem] bg-black/5 p-1.5 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.48)]`}
-                  style={{
-                    top: `${top}px`,
-                    left: `calc(50% + ${orbitX}%)`,
-                    width: `${width}%`,
-                    transform: `translateX(-50%) rotate(${tilt}deg)`,
-                    transformStyle: "preserve-3d",
-                    willChange: "transform, opacity"
-                  }}
-                >
-                  <div className={`relative overflow-hidden rounded-[0.52rem] ${index % 3 === 0 ? "aspect-[5/7]" : index % 3 === 1 ? "aspect-[4/5]" : "aspect-[5/6]"}`}>
-                    <Image
-                      src={src}
-                      alt={`Tiaan and Hannah photograph ${index + 1}`}
-                      fill
-                      sizes="42vw"
-                      className="object-cover"
-                      quality={66}
-                    />
-                  </div>
+                  <div className="spiral-caption">T &amp; H</div>
                 </figure>
               );
             })}

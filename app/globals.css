@@ -72,19 +72,91 @@ svg {
   margin-bottom: clamp(1rem, 3vw, 2rem);
 }
 
-/* Scroll hint — mobile only, fades out after 4s */
+/* Polaroid staircase spiral */
+.spiral-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding: 2rem 0 4rem;
+  overflow: hidden;
+}
+
+.spiral-card {
+  flex-shrink: 0;
+  width: 72vw;
+  max-width: 380px;
+  background: #fff;
+  padding: 0.75rem 0.75rem 2.4rem;
+  box-shadow: 0 12px 48px -12px rgba(0,0,0,0.2), 0 2px 10px rgba(0,0,0,0.07);
+  transform: rotate(var(--tilt));
+  opacity: 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.spiral-card:hover {
+  box-shadow: 0 20px 60px -14px rgba(0,0,0,0.28), 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.spiral-card--left {
+  align-self: flex-start;
+  margin-left: 4vw;
+}
+
+.spiral-card--right {
+  align-self: flex-end;
+  margin-right: 4vw;
+}
+
+.spiral-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #e8e0d8;
+}
+
+.spiral-caption {
+  margin-top: 0.65rem;
+  text-align: center;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+@media (min-width: 768px) {
+  .spiral-stack {
+    gap: 5rem;
+    padding: 2rem 0 6rem;
+  }
+
+  .spiral-card--left {
+    margin-left: 8vw;
+  }
+
+  .spiral-card--right {
+    margin-right: 8vw;
+  }
+}
+
+/* Scroll hint — mobile only, hides on first scroll */
 .scroll-hint {
   display: none;
   position: fixed;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  animation: scroll-hint-fade 0.8s ease 4s forwards;
+  gap: 0.75rem;
   pointer-events: none;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(199, 160, 106, 0.25);
+  border-radius: 2rem;
+  padding: 0.85rem 1.4rem 1rem;
+  backdrop-filter: blur(8px);
 }
 
 @media (max-width: 767px) {
@@ -96,35 +168,31 @@ svg {
 .scroll-hint__label {
   margin: 0;
   font-family: var(--font-sans), sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: rgba(199, 160, 106, 0.85);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(199, 160, 106, 0.95);
   white-space: nowrap;
 }
 
 .scroll-hint__chevron {
   display: block;
-  width: 20px;
-  height: 20px;
-  border-right: 1.5px solid rgba(199, 160, 106, 0.8);
-  border-bottom: 1.5px solid rgba(199, 160, 106, 0.8);
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid rgba(199, 160, 106, 0.85);
+  border-bottom: 2px solid rgba(199, 160, 106, 0.85);
   transform: rotate(45deg);
   animation: scroll-hint-bounce 1.4s ease-in-out infinite;
 }
 
 .scroll-hint__chevron + .scroll-hint__chevron {
-  margin-top: -12px;
+  margin-top: -16px;
   opacity: 0.4;
   animation-delay: 0.2s;
 }
 
 @keyframes scroll-hint-bounce {
   0%, 100% { transform: rotate(45deg) translateY(0); }
-  50% { transform: rotate(45deg) translateY(5px); }
-}
-
-@keyframes scroll-hint-fade {
-  to { opacity: 0; pointer-events: none; }
+  50% { transform: rotate(45deg) translateY(6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
