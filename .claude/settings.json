@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.vintage-yard.com)",
+      "WebFetch(domain:www.evepla.com)",
+      "WebFetch(domain:www.findglocal.com)",
+      "WebFetch(domain:www.facebook.com)",
+      "WebFetch(domain:www.property24.com)",
+      "WebFetch(domain:www.instagram.com)"
+    ]
+  }
+}

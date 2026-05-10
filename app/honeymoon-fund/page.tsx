@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const bankingDetails = [
   ["Bank", "Capitec"],
-  ["Account holder", "Tiaan Botha"],
-  ["Account number", "——————"],
+  ["Account holder", "Botha Honeymoon Fund"],
+  ["Account number", "2540836204"],
   ["Branch code", "470010"],
   ["Reference", "Your name and surname"]
 ];
@@ -28,6 +28,9 @@ export default function HoneymoonFundPage() {
           </Link>
           <Link href="/bridal-party" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
             Bridal Party
+          </Link>
+          <Link href="/venue" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
+            Venue
           </Link>
         </nav>
       </header>

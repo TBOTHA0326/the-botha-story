@@ -112,6 +112,9 @@ export default function TimelineExperience({ timeline }: { timeline: TimelineIte
           <Link href="/honeymoon-fund" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
             Fund
           </Link>
+          <Link href="/venue" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
+            Venue
+          </Link>
         </nav>
       </header>
 
@@ -122,7 +125,7 @@ export default function TimelineExperience({ timeline }: { timeline: TimelineIte
             The day, slowly.
           </h1>
           <p className="mx-auto mt-8 max-w-[31rem] font-sans text-sm leading-7 text-white/56">
-            Every moment, in order. From champagne on arrival to the final dance, here is how the day unfolds.
+            Every moment, in order.
           </p>
         </div>
 

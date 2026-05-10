@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   description: "A cinematic wedding story for Tiaan and Hannah."
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -29,6 +35,11 @@ export default function RootLayout({
       <body>
         {children}
         <div className="noise" />
+        <div className="scroll-hint">
+          <p className="scroll-hint__label">Only scroll down, not sideways</p>
+          <span className="scroll-hint__chevron" />
+          <span className="scroll-hint__chevron" />
+        </div>
       </body>
     </html>
   );

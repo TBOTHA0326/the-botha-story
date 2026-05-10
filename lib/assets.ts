@@ -60,16 +60,6 @@ export const bridalParty = [
     image: "/images/BridalParty/FranzBestMan.jpeg"
   },
   {
-    name: "Danielle",
-    role: "Bridesmaid",
-    image: "/images/BridalParty/DanielleFirstBridesmaid.jpeg"
-  },
-  {
-    name: "Wiehan",
-    role: "Groomsman",
-    image: "/images/BridalParty/WiehanFirstGroomsman.jpeg"
-  },
-  {
     name: "Dera",
     role: "Bridesmaid",
     image: "/images/BridalParty/DeraLastBridesmaid.jpeg"
@@ -80,13 +70,24 @@ export const bridalParty = [
     image: "/images/BridalParty/WernerLastGroomsman.jpeg"
   },
   {
-    name: "Morné",
-    role: "Ring Bearer",
-    image: "/images/BridalParty/MorneRingBearer.jpeg"
+    name: "Danielle",
+    role: "Bridesmaid",
+    image: "/images/BridalParty/DanielleFirstBridesmaid.jpeg"
+  },
+  {
+    name: "Wiehan",
+    role: "Groomsman",
+    image: "/images/BridalParty/WiehanFirstGroomsman.jpeg"
   },
   {
     name: "Zayle",
     role: "Flower Girl",
     image: "/images/BridalParty/ZayleFlowerGirl.jpeg"
+  },
+  {
+    name: "Morné",
+    role: "Ring Bearer",
+    image: "/images/BridalParty/MorneRingBearer.jpeg",
+    objectPosition: "top"
   }
 ];

@@ -290,6 +290,9 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
               <Link href="/honeymoon-fund" className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1.5 transition-transform duration-700 ease-silk hover:-translate-y-0.5 hover:bg-white/16 md:px-3 md:py-2">
                 Fund
               </Link>
+              <Link href="/venue" className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1.5 transition-transform duration-700 ease-silk hover:-translate-y-0.5 hover:bg-white/16 md:px-3 md:py-2">
+                Venue
+              </Link>
               <Link href="/bridal-party" className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1.5 transition-transform duration-700 ease-silk hover:-translate-y-0.5 hover:bg-white/16 md:px-3 md:py-2">
                 Bridal Party
               </Link>
@@ -303,7 +306,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
               </p>
               <h1 className="hero-title font-serif text-[23vw] font-medium uppercase leading-[0.68] tracking-normal text-white mix-blend-difference md:text-[15vw]">
                 <span className="block translate-x-[-4vw]">TIAAN</span>
-                <span className="block translate-x-[12vw] text-camel md:translate-x-[22vw]">&amp;</span>
+                <span className="block translate-x-[6vw] text-camel md:translate-x-[22vw]">&amp;</span>
                 <span className="block translate-x-[2vw]">HANNAH</span>
               </h1>
             </div>
@@ -315,7 +318,7 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
 
           <div className="reentry-copy absolute bottom-8 left-5 z-20 max-w-[32rem] md:bottom-14 md:left-[10vw]">
             <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">Tiaan & Hannah</p>
-            <p className="mt-4 font-serif text-4xl leading-none md:text-7xl">The promise returns in gold and shadow.</p>
+            <p className="mt-4 font-serif text-4xl leading-none md:text-7xl">And the TWO shall become ONE.</p>
           </div>
         </div>
       </section>
@@ -332,10 +335,10 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
             <article className="w-[78vw] shrink-0 md:w-[38vw]">
               <p className="font-sans text-[10px] uppercase tracking-[0.42em] text-camel">Engagement</p>
               <h2 className="mt-5 font-serif text-5xl leading-[0.88] md:text-[8rem]">
-                First light, first frame.
+                We decided on FOREVER.
               </h2>
               <p className="mt-6 max-w-[31rem] font-sans text-sm leading-7 text-white/58">
-                The morning after the proposal. These photographs were taken before the world knew, in the hours when it was still just the two of them.
+                The morning after the proposal. These photographs were taken before the world knew, in the hours when it was still just the two of us.
               </p>
             </article>
 
@@ -403,9 +406,9 @@ export default function WeddingExperience({ engagementImages, otherImages }: Wed
             <div className="spread-meta grid gap-6 md:grid-cols-2 md:gap-10">
               {[
                 ["Date", "6 December 2026"],
-                ["Time", "14:30"],
-                ["Dress code", "Black tie optional"],
-                ["Location", "South Africa"]
+                ["Time", "15:00 For 15:30"],
+                ["Dress code", "All Black - Formal"],
+                ["Location", "Vintage Yard | Wedding Venue"]
               ].map(([label, value]) => (
                 <div key={label} className="border-t border-black/14 pt-4">
                   <p className="font-sans text-[10px] uppercase tracking-[0.36em] text-black/38">{label}</p>

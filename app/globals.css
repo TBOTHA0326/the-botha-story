@@ -16,11 +16,14 @@ html {
   background: var(--background);
   color: var(--foreground);
   scroll-behavior: auto;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
+  max-width: 100vw;
   background: var(--background);
   color: var(--foreground);
 }
@@ -49,6 +52,12 @@ svg {
   mix-blend-mode: screen;
 }
 
+/* Hide GSAP-animated hero elements until JS initialises them */
+.minimal-letter,
+.reentry-copy {
+  opacity: 0;
+}
+
 .vertical-writing {
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -61,6 +70,61 @@ svg {
 .masonry > * {
   break-inside: avoid;
   margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+/* Scroll hint — mobile only, fades out after 4s */
+.scroll-hint {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: scroll-hint-fade 0.8s ease 4s forwards;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .scroll-hint {
+    display: flex;
+  }
+}
+
+.scroll-hint__label {
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(199, 160, 106, 0.85);
+  white-space: nowrap;
+}
+
+.scroll-hint__chevron {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-right: 1.5px solid rgba(199, 160, 106, 0.8);
+  border-bottom: 1.5px solid rgba(199, 160, 106, 0.8);
+  transform: rotate(45deg);
+  animation: scroll-hint-bounce 1.4s ease-in-out infinite;
+}
+
+.scroll-hint__chevron + .scroll-hint__chevron {
+  margin-top: -12px;
+  opacity: 0.4;
+  animation-delay: 0.2s;
+}
+
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); }
+  50% { transform: rotate(45deg) translateY(5px); }
+}
+
+@keyframes scroll-hint-fade {
+  to { opacity: 0; pointer-events: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

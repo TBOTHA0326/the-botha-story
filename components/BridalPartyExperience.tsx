@@ -11,6 +11,7 @@ type Member = {
   name: string;
   role: string;
   image: string;
+  objectPosition?: string;
 };
 
 export default function BridalPartyExperience({ members }: { members: Member[] }) {
@@ -87,6 +88,9 @@ export default function BridalPartyExperience({ members }: { members: Member[] }
           <Link href="/honeymoon-fund" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
             Fund
           </Link>
+          <Link href="/venue" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
+            Venue
+          </Link>
           <Link href="/" className="rounded-full border border-white/20 bg-white/10 px-3 py-2 transition-transform duration-700 ease-silk hover:-translate-y-0.5">
             Return
           </Link>
@@ -115,7 +119,7 @@ export default function BridalPartyExperience({ members }: { members: Member[] }
                   alt={`${member.name}, ${member.role}`}
                   fill
                   sizes="(min-width: 768px) 48vw, 100vw"
-                  className="object-cover"
+                  className={`object-cover ${member.objectPosition ? `object-${member.objectPosition}` : "object-center"}`}
                   priority={index < 2}
                   loading={index < 2 ? undefined : "lazy"}
                   quality={72}
